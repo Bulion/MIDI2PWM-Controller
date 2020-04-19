@@ -52,8 +52,7 @@ void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOE, PWM1_Pin|PWM2_Pin|PWM3_Pin|PWM24_Pin 
-                          |PWM25_Pin|PWM27_Pin|PWM29_Pin|PWM30_Pin 
-                          |PWM63_Pin|PWM64_Pin, GPIO_PIN_RESET);
+                          |PWM25_Pin|PWM27_Pin|PWM29_Pin|PWM30_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOC, PWM6_Pin|PWM7_Pin|PWM8_Pin|PWM9_Pin 
@@ -72,11 +71,9 @@ void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOA, PWM44_Pin|PWM45_Pin|PWM46_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : PEPin PEPin PEPin PEPin 
-                           PEPin PEPin PEPin PEPin 
-                           PEPin PEPin */
+                           PEPin PEPin PEPin PEPin */
   GPIO_InitStruct.Pin = PWM1_Pin|PWM2_Pin|PWM3_Pin|PWM24_Pin 
-                          |PWM25_Pin|PWM27_Pin|PWM29_Pin|PWM30_Pin 
-                          |PWM63_Pin|PWM64_Pin;
+                          |PWM25_Pin|PWM27_Pin|PWM29_Pin|PWM30_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
