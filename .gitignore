@@ -45,6 +45,7 @@ CTestTestfile.cmake _deps
 
 # VSCode
 .VSCode
+.vscode
 
 # Build dirs
 build*
