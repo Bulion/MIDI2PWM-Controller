@@ -134,6 +134,8 @@ void Error_Handler(void);
 #define PWM56_GPIO_Port GPIOD
 #define PWM57_Pin GPIO_PIN_7
 #define PWM57_GPIO_Port GPIOD
+#define PWM64_Pin GPIO_PIN_1
+#define PWM64_GPIO_Port GPIOE
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

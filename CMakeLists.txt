@@ -45,6 +45,7 @@ add_executable(${PROJ}
     ${SOURCE_DIR}/sys.c
     ${SOURCE_DIR}/system_stm32f7xx.c
     ${SOURCE_DIR}/tim.c
+    ${SOURCE_DIR}/usart.c
     ${SOURCE_DIR}/usb_device.c
     ${SOURCE_DIR}/usbd_cdc_if.c
     ${SOURCE_DIR}/usbd_conf.c

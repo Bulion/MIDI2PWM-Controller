@@ -23,6 +23,7 @@
 #include "adc.h"
 #include "i2c.h"
 #include "tim.h"
+#include "usart.h"
 #include "usb_device.h"
 #include "gpio.h"
 
@@ -119,6 +120,7 @@ int main(void)
     MX_TIM13_Init();
     MX_TIM14_Init();
     MX_USB_DEVICE_Init();
+    MX_UART8_Init();
     /* USER CODE BEGIN 2 */
 
     /* USER CODE END 2 */
@@ -144,11 +146,11 @@ void SystemClock_Config(void)
     RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
     RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
 
-    /** Configure the main internal regulator output voltage 
+    /** Configure the main internal regulator output voltage
   */
     __HAL_RCC_PWR_CLK_ENABLE();
     __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
-    /** Initializes the CPU, AHB and APB busses clocks 
+    /** Initializes the CPU, AHB and APB busses clocks
   */
     RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
     RCC_OscInitStruct.HSEState = RCC_HSE_ON;
@@ -162,13 +164,13 @@ void SystemClock_Config(void)
     {
         Error_Handler();
     }
-    /** Activate the Over-Drive mode 
+    /** Activate the Over-Drive mode
   */
     if (HAL_PWREx_EnableOverDrive() != HAL_OK)
     {
         Error_Handler();
     }
-    /** Initializes the CPU, AHB and APB busses clocks 
+    /** Initializes the CPU, AHB and APB busses clocks
   */
     RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
     RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
