@@ -37,12 +37,13 @@ AUX_SOURCE_DIRECTORY(${HAL_DIR}/Src HAL_SOURCES)
 
 add_executable(${PROJ}
     ${SOURCE_DIR}/adc.c
+    ${SOURCE_DIR}/dma.c
     ${SOURCE_DIR}/gpio.c
     ${SOURCE_DIR}/i2c.c
     ${SOURCE_DIR}/main.cpp
+    ${SOURCE_DIR}/SoftPWMController.cpp
     ${SOURCE_DIR}/stm32f7xx_hal_msp.c
     ${SOURCE_DIR}/stm32f7xx_it.c
-    ${SOURCE_DIR}/sys.c
     ${SOURCE_DIR}/system_stm32f7xx.c
     ${SOURCE_DIR}/tim.c
     ${SOURCE_DIR}/usart.c
@@ -63,6 +64,7 @@ set_target_properties(${PROJ} PROPERTIES SUFFIX ".elf")
 target_compile_definitions(${PROJ} PUBLIC
     USE_HAL_DRIVER
     STM32F750xx
+    USE_FULL_LL_DRIVER
 )
 
 target_compile_options(${PROJ} PUBLIC
@@ -105,7 +107,7 @@ if(CMAKE_HOST_WIN32)
 elseif (CMAKE_HOST_APPLE)
     find_program(stm32programmer NAMES STM32_Programmer.sh STM32_Programmer_CLI PATHS "/Applications/STMicroelectronics/STM32Cube/STM32CubeProgrammer/STM32CubeProgrammer.app/Contents/MacOs/bin")
 else()
-    find_program(stm32programmer NAMES STM32_Programmer.sh STM32_Programmer_CLI PATHS "/opt/STMicroelectronics/STM32Cube/STM32CubeProgrammer/")
+    find_program(stm32programmer NAMES STM32_Programmer.sh STM32_Programmer_CLI PATHS "/opt/STMicroelectronics/STM32Cube/STM32CubeProgrammer/bin")
 endif()
 
 # Flash firmware to target.

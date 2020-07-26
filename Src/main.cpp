@@ -21,6 +21,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "adc.h"
+#include "dma.h"
 #include "i2c.h"
 #include "tim.h"
 #include "usart.h"
@@ -34,11 +35,17 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+typedef struct {
+    GPIO_TypeDef* gpioPort;
+    uint16_t gpioPin;
+    uint8_t pwmVal;
+} softPWMData;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define NUM_OF_SOFT_PWM 39
+#define MAX_SOFT_PWM_VAL 64
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -49,7 +56,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+volatile softPWMData softPWMs[NUM_OF_SOFT_PWM];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -73,7 +80,8 @@ extern "C"
 int main(void)
 {
     /* USER CODE BEGIN 1 */
-
+    uint8_t pwmValue = 128;
+    PWMController test = new SoftPWM
     /* USER CODE END 1 */
 
     /* Enable I-Cache---------------------------------------------------------*/
@@ -100,6 +108,7 @@ int main(void)
 
     /* Initialize all configured peripherals */
     MX_GPIO_Init();
+    MX_DMA_Init();
     MX_ADC1_Init();
     MX_I2C1_Init();
     MX_I2C2_Init();
@@ -132,6 +141,7 @@ int main(void)
         /* USER CODE END WHILE */
 
         /* USER CODE BEGIN 3 */
+        softPWMs[45].
     }
     /* USER CODE END 3 */
 }
@@ -195,7 +205,23 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+    static uint8_t pwmCounter = 0;
+    for(uint8_t i = 0; i < NUM_OF_SOFT_PWM; ++i)
+    {
+        if(softPWMs[i].pwmVal < pwmCounter)
+        {
+            LL_GPIO_SetOutputPin(softPWMs[i].gpioPort, softPWMs[i].gpioPin);
+        }
+        else
+        {
+            LL_GPIO_ResetOutputPin(softPWMs[i].gpioPort, softPWMs[i].gpioPin);
+        }
+    }
+    ++pwmCounter;
+    if(pwmCounter > MAX_SOFT_PWM_VAL) { pwmCounter = 0; }
+}
 /* USER CODE END 4 */
 
 /**

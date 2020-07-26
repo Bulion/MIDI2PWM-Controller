@@ -74,7 +74,7 @@ SECTIONS
     . = ALIGN(4);
     KEEP(*(.isr_vector)) /* Startup code */
     . = ALIGN(4);
-  } >FLASH
+  } >RAM AT> FLASH
 
   /* The program code and other data into "FLASH" Rom type memory */
   .text :
@@ -91,7 +91,7 @@ SECTIONS
 
     . = ALIGN(4);
     _etext = .;        /* define a global symbols at end of code */
-  } >FLASH
+  } >RAM AT> FLASH
 
   /* Constant data into "FLASH" Rom type memory */
   .rodata :
@@ -100,21 +100,21 @@ SECTIONS
     *(.rodata)         /* .rodata sections (constants, strings, etc.) */
     *(.rodata*)        /* .rodata* sections (constants, strings, etc.) */
     . = ALIGN(4);
-  } >FLASH
+  } >RAM AT> FLASH
 
-  .ARM.extab   : { 
+  .ARM.extab   : {
     . = ALIGN(4);
     *(.ARM.extab* .gnu.linkonce.armextab.*)
     . = ALIGN(4);
-  } >FLASH
-  
+  } >RAM AT> FLASH
+
   .ARM : {
     . = ALIGN(4);
     __exidx_start = .;
     *(.ARM.exidx*)
     __exidx_end = .;
     . = ALIGN(4);
-  } >FLASH
+  } >RAM AT> FLASH
 
   .preinit_array     :
   {
@@ -123,8 +123,8 @@ SECTIONS
     KEEP (*(.preinit_array*))
     PROVIDE_HIDDEN (__preinit_array_end = .);
     . = ALIGN(4);
-  } >FLASH
-  
+  } >RAM AT> FLASH
+
   .init_array :
   {
     . = ALIGN(4);
@@ -133,8 +133,8 @@ SECTIONS
     KEEP (*(.init_array*))
     PROVIDE_HIDDEN (__init_array_end = .);
     . = ALIGN(4);
-  } >FLASH
-  
+  } >RAM AT> FLASH
+
   .fini_array :
   {
     . = ALIGN(4);
@@ -143,13 +143,13 @@ SECTIONS
     KEEP (*(.fini_array*))
     PROVIDE_HIDDEN (__fini_array_end = .);
     . = ALIGN(4);
-  } >FLASH
+  } >RAM AT> FLASH
 
   /* Used by the startup to initialize data */
   _sidata = LOADADDR(.data);
 
   /* Initialized data sections into "RAM" Ram type memory */
-  .data : 
+  .data :
   {
     . = ALIGN(4);
     _sdata = .;        /* create a global symbol at data start */
@@ -158,7 +158,7 @@ SECTIONS
 
     . = ALIGN(4);
     _edata = .;        /* define a global symbol at data end */
-    
+
   } >RAM AT> FLASH
 
   /* Uninitialized data section into "RAM" Ram type memory */
