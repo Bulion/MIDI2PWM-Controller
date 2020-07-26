@@ -55,7 +55,7 @@ add_executable(${PROJ}
     ${STM32_USB_LIB_DIR}/Core/Src/usbd_core.c
     ${STM32_USB_LIB_DIR}/Core/Src/usbd_ctlreq.c
     ${STM32_USB_LIB_DIR}/Core/Src/usbd_ioreq.c
-    ${STARTUP_DIR}/startup_stm32f750v8tx.s
+    ${STARTUP_DIR}/startup_stm32f750xx.s
     ${HAL_SOURCES}
 )
 
@@ -72,6 +72,8 @@ target_compile_options(${PROJ} PUBLIC
         -std=c++14
         -fno-rtti
     >
+    $<$<CONFIG:Release>:-O3>
+    $<$<CONFIG:Debug>:-Og>
     -mcpu=cortex-m7
     -mthumb
     -mno-thumb-interwork

@@ -2,7 +2,7 @@
 
 class PWMController {
 public:
-    virtual ~PWMController();
+    virtual ~PWMController() {};
 
     virtual void setPWMValue(uint8_t newValue) = 0;
     virtual void setMidpoint(uint8_t midpointValue) = 0;

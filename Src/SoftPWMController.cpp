@@ -1,8 +1,11 @@
 #include "SoftPWMController.hpp"
-#include "MIDIDecoder.hpp"
+#include "gpio.h"
 
-uint8_t SoftPWMController::instancesCounter = 0;
-uint8_t SoftPWMController::resolution = 127;
+#include <cstdio>
+
+uint8_t            SoftPWMController::instancesCounter = 0;
+uint8_t            SoftPWMController::resolution = MAX_SOFT_PWM_RESOLUTION;
+SoftPWMController *SoftPWMController::softPWMInstancesArray[MAX_SOFT_PWM_INSTANCES] = {nullptr};
 
 uint8_t remapValue(uint8_t value, uint8_t start1, uint8_t stop1, uint8_t start2, uint8_t stop2)
 {
@@ -10,46 +13,59 @@ uint8_t remapValue(uint8_t value, uint8_t start1, uint8_t stop1, uint8_t start2,
 }
 
 SoftPWMController::SoftPWMController(GPIO_TypeDef *gpioPort, uint16_t gpioPin,
-                                     I2C_TypeDef *i2cHandler, uint8_t i2cAddress, uint8_t i2cIOPairNumber) :
-      midpointValue(0)
+                                     I2C_HandleTypeDef *i2cHandler, uint32_t i2cAddress, uint8_t i2cIOPairNumber) :
+      gpioPort(gpioPort)
+    , gpioPin(gpioPin)
+    , PWMValue(0)
+    , midpointValue(0)
     , i2cHandler(i2cHandler)
     , i2cAddress(i2cAddress)
     , i2cIOPairNumber(i2cIOPairNumber)
 {
     if(instancesCounter < MAX_SOFT_PWM_INSTANCES)
     {
-        instance = &softPWMInstancesArray[instancesCounter++];
-        instance->gpioPort = gpioPort;
-        instance->gpioPin = gpioPin;
-        instance->PWMValue = 0;
+        softPWMInstancesArray[instancesCounter++] = this;
     }
+    else
+    {
+        std::printf("To many SoftPWMController instances!");
+        while(1) {}
+    }
+
 }
 
-SoftPWMController::~SoftPWMController()
-{
-
-}
+SoftPWMController::~SoftPWMController() {}
 
 void SoftPWMController::setPWMValue(uint8_t value)
 {
     uint8_t remapedValue = 0;
-
-    if(value < midpointValue)
+    if(value > MAX_SOFT_PWM_RESOLUTION)
     {
-        remapedValue = remapValue(value, midpointValue, 0, 0, resolution);
+        value = MAX_SOFT_PWM_RESOLUTION;
     }
-    else
+    if(value != midpointValue)
     {
-        remapedValue = remapValue(value, midpointValue, MAX_MIDI_VALUE, 0, resolution);
+        if(value == 0 || value == MAX_SOFT_PWM_RESOLUTION)
+        {
+            remapedValue = resolution + 1;
+        }
+        else if(value < midpointValue)
+        {
+            remapedValue = remapValue(value, midpointValue, 0, 0, resolution);
+        }
+        else
+        {
+            remapedValue = remapValue(value, midpointValue, MAX_SOFT_PWM_RESOLUTION, 0, resolution);
+        }
     }
 
-    instance->PWMValue = remapedValue;
+    PWMValue = remapedValue;
 }
 
 void SoftPWMController::setMidpoint(uint8_t value)
 {
     midpointValue = value;
-    setPWMValue(instance->PWMValue);
+    setPWMValue(PWMValue);
 }
 
 void SoftPWMController::turnOffOutput()
@@ -64,10 +80,27 @@ void SoftPWMController::turnOnOutput()
 
 void SoftPWMController::updateOutputs()
 {
-
+    static uint8_t pwmCounter = 0;
+    for(uint8_t i = 0; i < instancesCounter; ++i)
+    {
+        if(softPWMInstancesArray[i]->PWMValue > pwmCounter)
+        {
+            LL_GPIO_SetOutputPin(softPWMInstancesArray[i]->gpioPort, softPWMInstancesArray[i]->gpioPin);
+        }
+        else
+        {
+            LL_GPIO_ResetOutputPin(softPWMInstancesArray[i]->gpioPort, softPWMInstancesArray[i]->gpioPin);
+        }
+    }
+    ++pwmCounter;
+    if(pwmCounter > resolution) { pwmCounter = 0; }
 }
 
 void SoftPWMController::setResolution(uint8_t res)
 {
+    if (res > MAX_SOFT_PWM_RESOLUTION)
+    {
+        res = MAX_SOFT_PWM_RESOLUTION;
+    }
     resolution = res;
 }

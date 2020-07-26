@@ -30,22 +30,18 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "PWMController.hpp"
+#include "SoftPWMController.hpp"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-typedef struct {
-    GPIO_TypeDef* gpioPort;
-    uint16_t gpioPin;
-    uint8_t pwmVal;
-} softPWMData;
+
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define NUM_OF_SOFT_PWM 39
-#define MAX_SOFT_PWM_VAL 64
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -56,7 +52,7 @@ typedef struct {
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-volatile softPWMData softPWMs[NUM_OF_SOFT_PWM];
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -80,8 +76,16 @@ extern "C"
 int main(void)
 {
     /* USER CODE BEGIN 1 */
-    uint8_t pwmValue = 128;
-    PWMController test = new SoftPWM
+	SoftPWMController::setResolution(20);
+	uint8_t pwmValue = 1;
+	uint8_t midpoint = 2;
+    PWMController *test = nullptr;
+	for(int i = 0; i < 34; ++i) {
+		test = new SoftPWMController(PWM47_GPIO_Port, (uint16_t) PWM47_Pin, &hi2c1, (uint32_t) 0x00000000, (uint8_t) 0);
+        test->setMidpoint(0);
+		test->setPWMValue(0);
+	}
+    test = new SoftPWMController(PWM46_GPIO_Port, (uint16_t) PWM46_Pin, &hi2c1, (uint32_t) 0x00000000, (uint8_t) 0);
     /* USER CODE END 1 */
 
     /* Enable I-Cache---------------------------------------------------------*/
@@ -131,7 +135,7 @@ int main(void)
     MX_USB_DEVICE_Init();
     MX_UART8_Init();
     /* USER CODE BEGIN 2 */
-
+    HAL_TIM_Base_Start_IT(&htim6);
     /* USER CODE END 2 */
 
     /* Infinite loop */
@@ -141,7 +145,11 @@ int main(void)
         /* USER CODE END WHILE */
 
         /* USER CODE BEGIN 3 */
-        softPWMs[45].
+        HAL_Delay(500);
+        test->setMidpoint(midpoint);
+        test->setPWMValue(pwmValue);
+        if(pwmValue > 127)
+            pwmValue = 0;
     }
     /* USER CODE END 3 */
 }
@@ -207,20 +215,7 @@ void SystemClock_Config(void)
 /* USER CODE BEGIN 4 */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-    static uint8_t pwmCounter = 0;
-    for(uint8_t i = 0; i < NUM_OF_SOFT_PWM; ++i)
-    {
-        if(softPWMs[i].pwmVal < pwmCounter)
-        {
-            LL_GPIO_SetOutputPin(softPWMs[i].gpioPort, softPWMs[i].gpioPin);
-        }
-        else
-        {
-            LL_GPIO_ResetOutputPin(softPWMs[i].gpioPort, softPWMs[i].gpioPin);
-        }
-    }
-    ++pwmCounter;
-    if(pwmCounter > MAX_SOFT_PWM_VAL) { pwmCounter = 0; }
+    SoftPWMController::updateOutputs();
 }
 /* USER CODE END 4 */
 

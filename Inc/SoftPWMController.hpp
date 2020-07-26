@@ -2,17 +2,11 @@
 #include "stm32f7xx.h"
 #include "PWMController.hpp"
 
-typedef struct {
-    GPIO_TypeDef *gpioPort;
-    uint16_t      gpioPin;
-    uint8_t       PWMValue;
-} softPWM_TypeDef;
-
 class SoftPWMController : public PWMController
 {
 public:
     SoftPWMController(GPIO_TypeDef *gpioPort, uint16_t gpioPin,
-                      I2C_TypeDef *i2cHandler, uint8_t i2cAdress, uint8_t i2cIOPairNumber);
+                      I2C_HandleTypeDef *i2cHandler, uint32_t i2cAdress, uint8_t i2cIOPairNumber);
     ~SoftPWMController();
 
     void setPWMValue(uint8_t value) override;
@@ -25,14 +19,18 @@ public:
 
 private:
     static constexpr uint8_t MAX_SOFT_PWM_INSTANCES = 38;
+    static constexpr uint8_t MAX_SOFT_PWM_RESOLUTION = 127;
+
     static uint8_t instancesCounter;
     static uint8_t resolution;
-    static softPWM_TypeDef softPWMInstancesArray[MAX_SOFT_PWM_INSTANCES];
+    static SoftPWMController *softPWMInstancesArray[MAX_SOFT_PWM_INSTANCES];
 
-    softPWM_TypeDef *instance;
-    uint8_t midpointValue;
+    GPIO_TypeDef *gpioPort;
+    uint16_t      gpioPin;
+    uint8_t       PWMValue;
+    uint8_t       midpointValue;
 
-    I2C_TypeDef *i2cHandler;
-    uint8_t      i2cAddress;
-    uint8_t      i2cIOPairNumber;
+    I2C_HandleTypeDef *i2cHandler;
+    uint8_t            i2cAddress;
+    uint8_t            i2cIOPairNumber;
 };
