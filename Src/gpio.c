@@ -81,10 +81,13 @@ void MX_GPIO_Init(void)
   LL_GPIO_ResetOutputPin(PWM12_GPIO_Port, PWM12_Pin);
 
   /**/
+  LL_GPIO_ResetOutputPin(PWM18_GPIO_Port, PWM18_Pin);
+
+  /**/
   LL_GPIO_ResetOutputPin(PWM19_GPIO_Port, PWM19_Pin);
 
   /**/
-  LL_GPIO_ResetOutputPin(PWM20_GPIO_Port, PWM20_Pin);
+  LL_GPIO_ResetOutputPin(PWM22_GPIO_Port, PWM22_Pin);
 
   /**/
   LL_GPIO_ResetOutputPin(PWM23_GPIO_Port, PWM23_Pin);
@@ -93,16 +96,10 @@ void MX_GPIO_Init(void)
   LL_GPIO_ResetOutputPin(PWM24_GPIO_Port, PWM24_Pin);
 
   /**/
-  LL_GPIO_ResetOutputPin(PWM25_GPIO_Port, PWM25_Pin);
+  LL_GPIO_ResetOutputPin(PWM26_GPIO_Port, PWM26_Pin);
 
   /**/
-  LL_GPIO_ResetOutputPin(PWM27_GPIO_Port, PWM27_Pin);
-
-  /**/
-  LL_GPIO_ResetOutputPin(PWM29_GPIO_Port, PWM29_Pin);
-
-  /**/
-  LL_GPIO_ResetOutputPin(PWM30_GPIO_Port, PWM30_Pin);
+  LL_GPIO_ResetOutputPin(PWM28_GPIO_Port, PWM28_Pin);
 
   /**/
   LL_GPIO_ResetOutputPin(PWM31_GPIO_Port, PWM31_Pin);
@@ -111,7 +108,7 @@ void MX_GPIO_Init(void)
   LL_GPIO_ResetOutputPin(PWM32_GPIO_Port, PWM32_Pin);
 
   /**/
-  LL_GPIO_ResetOutputPin(PWM35_GPIO_Port, PWM35_Pin);
+  LL_GPIO_ResetOutputPin(PWM33_GPIO_Port, PWM33_Pin);
 
   /**/
   LL_GPIO_ResetOutputPin(PWM36_GPIO_Port, PWM36_Pin);
@@ -123,7 +120,7 @@ void MX_GPIO_Init(void)
   LL_GPIO_ResetOutputPin(PWM38_GPIO_Port, PWM38_Pin);
 
   /**/
-  LL_GPIO_ResetOutputPin(PWM44_GPIO_Port, PWM44_Pin);
+  LL_GPIO_ResetOutputPin(PWM39_GPIO_Port, PWM39_Pin);
 
   /**/
   LL_GPIO_ResetOutputPin(PWM45_GPIO_Port, PWM45_Pin);
@@ -163,6 +160,9 @@ void MX_GPIO_Init(void)
 
   /**/
   LL_GPIO_ResetOutputPin(PWM57_GPIO_Port, PWM57_Pin);
+
+  /**/
+  LL_GPIO_ResetOutputPin(PWM58_GPIO_Port, PWM58_Pin);
 
   /**/
   GPIO_InitStruct.Pin = PWM1_Pin;
@@ -245,6 +245,14 @@ void MX_GPIO_Init(void)
   LL_GPIO_Init(PWM12_GPIO_Port, &GPIO_InitStruct);
 
   /**/
+  GPIO_InitStruct.Pin = PWM18_Pin;
+  GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
+  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
+  GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
+  LL_GPIO_Init(PWM18_GPIO_Port, &GPIO_InitStruct);
+
+  /**/
   GPIO_InitStruct.Pin = PWM19_Pin;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
   GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
@@ -253,12 +261,12 @@ void MX_GPIO_Init(void)
   LL_GPIO_Init(PWM19_GPIO_Port, &GPIO_InitStruct);
 
   /**/
-  GPIO_InitStruct.Pin = PWM20_Pin;
+  GPIO_InitStruct.Pin = PWM22_Pin;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
   GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
   GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
   GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
-  LL_GPIO_Init(PWM20_GPIO_Port, &GPIO_InitStruct);
+  LL_GPIO_Init(PWM22_GPIO_Port, &GPIO_InitStruct);
 
   /**/
   GPIO_InitStruct.Pin = PWM23_Pin;
@@ -277,36 +285,20 @@ void MX_GPIO_Init(void)
   LL_GPIO_Init(PWM24_GPIO_Port, &GPIO_InitStruct);
 
   /**/
-  GPIO_InitStruct.Pin = PWM25_Pin;
+  GPIO_InitStruct.Pin = PWM26_Pin;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
   GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
   GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
   GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
-  LL_GPIO_Init(PWM25_GPIO_Port, &GPIO_InitStruct);
+  LL_GPIO_Init(PWM26_GPIO_Port, &GPIO_InitStruct);
 
   /**/
-  GPIO_InitStruct.Pin = PWM27_Pin;
+  GPIO_InitStruct.Pin = PWM28_Pin;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
   GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
   GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
   GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
-  LL_GPIO_Init(PWM27_GPIO_Port, &GPIO_InitStruct);
-
-  /**/
-  GPIO_InitStruct.Pin = PWM29_Pin;
-  GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
-  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
-  GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
-  GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
-  LL_GPIO_Init(PWM29_GPIO_Port, &GPIO_InitStruct);
-
-  /**/
-  GPIO_InitStruct.Pin = PWM30_Pin;
-  GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
-  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
-  GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
-  GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
-  LL_GPIO_Init(PWM30_GPIO_Port, &GPIO_InitStruct);
+  LL_GPIO_Init(PWM28_GPIO_Port, &GPIO_InitStruct);
 
   /**/
   GPIO_InitStruct.Pin = PWM31_Pin;
@@ -325,12 +317,12 @@ void MX_GPIO_Init(void)
   LL_GPIO_Init(PWM32_GPIO_Port, &GPIO_InitStruct);
 
   /**/
-  GPIO_InitStruct.Pin = PWM35_Pin;
+  GPIO_InitStruct.Pin = PWM33_Pin;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
   GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
   GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
   GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
-  LL_GPIO_Init(PWM35_GPIO_Port, &GPIO_InitStruct);
+  LL_GPIO_Init(PWM33_GPIO_Port, &GPIO_InitStruct);
 
   /**/
   GPIO_InitStruct.Pin = PWM36_Pin;
@@ -357,12 +349,12 @@ void MX_GPIO_Init(void)
   LL_GPIO_Init(PWM38_GPIO_Port, &GPIO_InitStruct);
 
   /**/
-  GPIO_InitStruct.Pin = PWM44_Pin;
+  GPIO_InitStruct.Pin = PWM39_Pin;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
   GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
   GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
   GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
-  LL_GPIO_Init(PWM44_GPIO_Port, &GPIO_InitStruct);
+  LL_GPIO_Init(PWM39_GPIO_Port, &GPIO_InitStruct);
 
   /**/
   GPIO_InitStruct.Pin = PWM45_Pin;
@@ -467,6 +459,14 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
   GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
   LL_GPIO_Init(PWM57_GPIO_Port, &GPIO_InitStruct);
+
+  /**/
+  GPIO_InitStruct.Pin = PWM58_Pin;
+  GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
+  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
+  GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
+  LL_GPIO_Init(PWM58_GPIO_Port, &GPIO_InitStruct);
 
 }
 

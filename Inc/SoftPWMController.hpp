@@ -5,14 +5,11 @@
 class SoftPWMController : public PWMController
 {
 public:
-    SoftPWMController(GPIO_TypeDef *gpioPort, uint16_t gpioPin,
-                      I2C_HandleTypeDef *i2cHandler, uint32_t i2cAdress, uint8_t i2cIOPairNumber);
+    SoftPWMController(GPIO_TypeDef *gpioPort, uint16_t gpioPin);
     ~SoftPWMController();
 
-    void setPWMValue(uint8_t value) override;
-    void setMidpoint(uint8_t value) override;
-    void turnOffOutput()            override;
-    void turnOnOutput()             override;
+    uint8_t getResolution()            override;
+    void    setPWMValue(uint8_t value) override;
 
     static void updateOutputs();
     static void setResolution(uint8_t resolution);
@@ -28,9 +25,4 @@ private:
     GPIO_TypeDef *gpioPort;
     uint16_t      gpioPin;
     uint8_t       PWMValue;
-    uint8_t       midpointValue;
-
-    I2C_HandleTypeDef *i2cHandler;
-    uint8_t            i2cAddress;
-    uint8_t            i2cIOPairNumber;
 };

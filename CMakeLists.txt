@@ -39,7 +39,10 @@ add_executable(${PROJ}
     ${SOURCE_DIR}/adc.c
     ${SOURCE_DIR}/dma.c
     ${SOURCE_DIR}/gpio.c
+    ${SOURCE_DIR}/HardPWMController.cpp
+    ${SOURCE_DIR}/HBridgeController.cpp
     ${SOURCE_DIR}/i2c.c
+    ${SOURCE_DIR}/ioExpanderController.cpp
     ${SOURCE_DIR}/main.cpp
     ${SOURCE_DIR}/SoftPWMController.cpp
     ${SOURCE_DIR}/stm32f7xx_hal_msp.c

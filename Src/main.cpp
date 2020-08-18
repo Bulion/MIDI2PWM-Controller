@@ -30,8 +30,10 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "PWMController.hpp"
+#include "HBridgeController.hpp"
 #include "SoftPWMController.hpp"
+#include "HardPWMController.hpp"
+#include "ioExpanderController.hpp"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -53,6 +55,72 @@
 
 /* USER CODE BEGIN PV */
 
+HBridgeController outputs[64] = {
+    HBridgeController(ioExp1, new SoftPWMController(PWM1_GPIO_Port, PWM1_Pin)),
+    HBridgeController(ioExp1, new SoftPWMController(PWM2_GPIO_Port, PWM2_Pin)),
+    HBridgeController(ioExp1, new SoftPWMController(PWM3_GPIO_Port, PWM3_Pin)),
+    HBridgeController(ioExp1, new HardPWMController(&htim9, TIM_CHANNEL_1)),
+    HBridgeController(ioExp1, new HardPWMController(&htim9, TIM_CHANNEL_2)),
+    HBridgeController(ioExp1, new SoftPWMController(PWM6_GPIO_Port, PWM6_Pin)),
+    HBridgeController(ioExp1, new SoftPWMController(PWM7_GPIO_Port, PWM7_Pin)),
+    HBridgeController(ioExp1, new SoftPWMController(PWM8_GPIO_Port, PWM8_Pin)),
+    HBridgeController(ioExp2, new SoftPWMController(PWM9_GPIO_Port, PWM9_Pin)),
+    HBridgeController(ioExp2, new SoftPWMController(PWM10_GPIO_Port, PWM10_Pin)),
+    HBridgeController(ioExp2, new SoftPWMController(PWM11_GPIO_Port, PWM11_Pin)),
+    HBridgeController(ioExp2, new SoftPWMController(PWM12_GPIO_Port, PWM12_Pin)),
+    HBridgeController(ioExp2, new HardPWMController(&htim5, TIM_CHANNEL_1)),
+    HBridgeController(ioExp2, new HardPWMController(&htim5, TIM_CHANNEL_2)),
+    HBridgeController(ioExp2, new HardPWMController(&htim5, TIM_CHANNEL_3)),
+    HBridgeController(ioExp2, new HardPWMController(&htim5, TIM_CHANNEL_4)),
+    HBridgeController(ioExp3, new HardPWMController(&htim2, TIM_CHANNEL_1)),
+    HBridgeController(ioExp3, new SoftPWMController(PWM18_GPIO_Port, PWM18_Pin)),
+    HBridgeController(ioExp3, new SoftPWMController(PWM19_GPIO_Port, PWM19_Pin)),
+    HBridgeController(ioExp3, new HardPWMController(&htim3, TIM_CHANNEL_3)),
+    HBridgeController(ioExp3, new HardPWMController(&htim3, TIM_CHANNEL_4)),
+    HBridgeController(ioExp3, new SoftPWMController(PWM22_GPIO_Port, PWM22_Pin)),
+    HBridgeController(ioExp3, new SoftPWMController(PWM23_GPIO_Port, PWM23_Pin)),
+    HBridgeController(ioExp3, new SoftPWMController(PWM24_GPIO_Port, PWM24_Pin)),
+    HBridgeController(ioExp4, new HardPWMController(&htim1, TIM_CHANNEL_1)),
+    HBridgeController(ioExp4, new SoftPWMController(PWM26_GPIO_Port, PWM26_Pin)),
+    HBridgeController(ioExp4, new HardPWMController(&htim1, TIM_CHANNEL_2)),
+    HBridgeController(ioExp4, new SoftPWMController(PWM28_GPIO_Port, PWM28_Pin)),
+    HBridgeController(ioExp4, new HardPWMController(&htim1, TIM_CHANNEL_3)),
+    HBridgeController(ioExp4, new HardPWMController(&htim1, TIM_CHANNEL_4)),
+    HBridgeController(ioExp4, new SoftPWMController(PWM31_GPIO_Port, PWM31_Pin)),
+    HBridgeController(ioExp4, new SoftPWMController(PWM32_GPIO_Port, PWM32_Pin)),
+    HBridgeController(ioExp5, new SoftPWMController(PWM33_GPIO_Port, PWM33_Pin)),
+    HBridgeController(ioExp5, new HardPWMController(&htim12, TIM_CHANNEL_1)),
+    HBridgeController(ioExp5, new HardPWMController(&htim12, TIM_CHANNEL_2)),
+    HBridgeController(ioExp5, new SoftPWMController(PWM36_GPIO_Port, PWM36_Pin)),
+    HBridgeController(ioExp5, new SoftPWMController(PWM37_GPIO_Port, PWM37_Pin)),
+    HBridgeController(ioExp5, new SoftPWMController(PWM38_GPIO_Port, PWM38_Pin)),
+    HBridgeController(ioExp5, new SoftPWMController(PWM39_GPIO_Port, PWM39_Pin)),
+    HBridgeController(ioExp5, new HardPWMController(&htim4, TIM_CHANNEL_3)),
+    HBridgeController(ioExp6, new HardPWMController(&htim4, TIM_CHANNEL_4)),
+    HBridgeController(ioExp6, new HardPWMController(&htim8, TIM_CHANNEL_1)),
+    HBridgeController(ioExp6, new HardPWMController(&htim8, TIM_CHANNEL_2)),
+    HBridgeController(ioExp6, new HardPWMController(&htim8, TIM_CHANNEL_3)),
+    HBridgeController(ioExp6, new SoftPWMController(PWM45_GPIO_Port, PWM45_Pin)),
+    HBridgeController(ioExp6, new SoftPWMController(PWM46_GPIO_Port, PWM46_Pin)),
+    HBridgeController(ioExp6, new SoftPWMController(PWM47_GPIO_Port, PWM47_Pin)),
+    HBridgeController(ioExp6, new SoftPWMController(PWM48_GPIO_Port, PWM48_Pin)),
+    HBridgeController(ioExp7, new SoftPWMController(PWM49_GPIO_Port, PWM49_Pin)),
+    HBridgeController(ioExp7, new SoftPWMController(PWM50_GPIO_Port, PWM50_Pin)),
+    HBridgeController(ioExp7, new SoftPWMController(PWM51_GPIO_Port, PWM51_Pin)),
+    HBridgeController(ioExp7, new SoftPWMController(PWM52_GPIO_Port, PWM52_Pin)),
+    HBridgeController(ioExp7, new SoftPWMController(PWM53_GPIO_Port, PWM53_Pin)),
+    HBridgeController(ioExp7, new SoftPWMController(PWM54_GPIO_Port, PWM54_Pin)),
+    HBridgeController(ioExp7, new SoftPWMController(PWM55_GPIO_Port, PWM55_Pin)),
+    HBridgeController(ioExp8, new SoftPWMController(PWM56_GPIO_Port, PWM56_Pin)),
+    HBridgeController(ioExp8, new SoftPWMController(PWM57_GPIO_Port, PWM57_Pin)),
+    HBridgeController(ioExp8, new SoftPWMController(PWM58_GPIO_Port, PWM58_Pin)),
+    HBridgeController(ioExp8, new HardPWMController(&htim2, TIM_CHANNEL_2)),
+    HBridgeController(ioExp8, new HardPWMController(&htim3, TIM_CHANNEL_1)),
+    HBridgeController(ioExp8, new HardPWMController(&htim3, TIM_CHANNEL_2)),
+    HBridgeController(ioExp8, new HardPWMController(&htim10, TIM_CHANNEL_1)),
+    HBridgeController(ioExp8, new HardPWMController(&htim11, TIM_CHANNEL_1)),
+    HBridgeController(ioExp8, new SoftPWMController(PWM64_GPIO_Port, PWM64_Pin))
+};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -76,16 +144,7 @@ extern "C"
 int main(void)
 {
     /* USER CODE BEGIN 1 */
-	SoftPWMController::setResolution(20);
-	uint8_t pwmValue = 1;
-	uint8_t midpoint = 2;
-    PWMController *test = nullptr;
-	for(int i = 0; i < 34; ++i) {
-		test = new SoftPWMController(PWM47_GPIO_Port, (uint16_t) PWM47_Pin, &hi2c1, (uint32_t) 0x00000000, (uint8_t) 0);
-        test->setMidpoint(0);
-		test->setPWMValue(0);
-	}
-    test = new SoftPWMController(PWM46_GPIO_Port, (uint16_t) PWM46_Pin, &hi2c1, (uint32_t) 0x00000000, (uint8_t) 0);
+	  SoftPWMController::setResolution(15);
     /* USER CODE END 1 */
 
     /* Enable I-Cache---------------------------------------------------------*/
@@ -145,11 +204,7 @@ int main(void)
         /* USER CODE END WHILE */
 
         /* USER CODE BEGIN 3 */
-        HAL_Delay(500);
-        test->setMidpoint(midpoint);
-        test->setPWMValue(pwmValue);
-        if(pwmValue > 127)
-            pwmValue = 0;
+
     }
     /* USER CODE END 3 */
 }
