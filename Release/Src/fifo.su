@@ -1,0 +1,4 @@
+fifo.c:13:6:initFifo	0	static
+fifo.c:21:9:push	8	static
+fifo.c:39:12:pop	24	static
+fifo.c:53:6:clear	0	static
