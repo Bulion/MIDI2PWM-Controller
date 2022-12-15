@@ -7,13 +7,13 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
+  * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
   * All rights reserved.</center></h2>
   *
-  * This software component is licensed by ST under Ultimate Liberty license
-  * SLA0044, the "License"; You may not use this file except in compliance with
-  * the License. You may obtain a copy of the License at:
-  *                             www.st.com/SLA0044
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
   *
   ******************************************************************************
   */
@@ -29,19 +29,10 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f7xx_hal.h"
-#include "stm32f7xx_ll_system.h"
-#include "stm32f7xx_ll_gpio.h"
-#include "stm32f7xx_ll_exti.h"
-#include "stm32f7xx_ll_bus.h"
-#include "stm32f7xx_ll_cortex.h"
-#include "stm32f7xx_ll_rcc.h"
-#include "stm32f7xx_ll_utils.h"
-#include "stm32f7xx_ll_pwr.h"
-#include "stm32f7xx_ll_dma.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "fifo.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -67,86 +58,137 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define PWM1_Pin LL_GPIO_PIN_2
+#define PWM1_Pin GPIO_PIN_2
 #define PWM1_GPIO_Port GPIOE
-#define PWM2_Pin LL_GPIO_PIN_3
+#define PWM2_Pin GPIO_PIN_3
 #define PWM2_GPIO_Port GPIOE
-#define PWM3_Pin LL_GPIO_PIN_4
+#define PWM3_Pin GPIO_PIN_4
 #define PWM3_GPIO_Port GPIOE
-#define PWM6_Pin LL_GPIO_PIN_13
+#define PWM4_Pin GPIO_PIN_5
+#define PWM4_GPIO_Port GPIOE
+#define PWM5_Pin GPIO_PIN_6
+#define PWM5_GPIO_Port GPIOE
+#define PWM6_Pin GPIO_PIN_13
 #define PWM6_GPIO_Port GPIOC
-#define PWM7_Pin LL_GPIO_PIN_14
+#define PWM7_Pin GPIO_PIN_14
 #define PWM7_GPIO_Port GPIOC
-#define PWM8_Pin LL_GPIO_PIN_15
+#define PWM8_Pin GPIO_PIN_15
 #define PWM8_GPIO_Port GPIOC
-#define PWM9_Pin LL_GPIO_PIN_0
+#define PWM9_Pin GPIO_PIN_0
 #define PWM9_GPIO_Port GPIOC
-#define PWM10_Pin LL_GPIO_PIN_1
+#define PWM10_Pin GPIO_PIN_1
 #define PWM10_GPIO_Port GPIOC
-#define PWM11_Pin LL_GPIO_PIN_2
+#define PWM11_Pin GPIO_PIN_2
 #define PWM11_GPIO_Port GPIOC
-#define PWM12_Pin LL_GPIO_PIN_3
+#define PWM12_Pin GPIO_PIN_3
 #define PWM12_GPIO_Port GPIOC
-#define PWM18_Pin LL_GPIO_PIN_4
+#define PWM13_Pin GPIO_PIN_0
+#define PWM13_GPIO_Port GPIOA
+#define PWM14_Pin GPIO_PIN_1
+#define PWM14_GPIO_Port GPIOA
+#define PWM15_Pin GPIO_PIN_2
+#define PWM15_GPIO_Port GPIOA
+#define PWM16_Pin GPIO_PIN_3
+#define PWM16_GPIO_Port GPIOA
+#define PWM17_Pin GPIO_PIN_4
+#define PWM17_GPIO_Port GPIOC
+#define PWM18_Pin GPIO_PIN_5
 #define PWM18_GPIO_Port GPIOC
-#define PWM19_Pin LL_GPIO_PIN_5
-#define PWM19_GPIO_Port GPIOC
-#define PWM22_Pin LL_GPIO_PIN_2
-#define PWM22_GPIO_Port GPIOB
-#define PWM23_Pin LL_GPIO_PIN_7
+#define PWM19_Pin GPIO_PIN_0
+#define PWM19_GPIO_Port GPIOB
+#define PWM20_Pin GPIO_PIN_1
+#define PWM20_GPIO_Port GPIOB
+#define PWM21_Pin GPIO_PIN_2
+#define PWM21_GPIO_Port GPIOB
+#define PWM22_Pin GPIO_PIN_7
+#define PWM22_GPIO_Port GPIOE
+#define PWM23_Pin GPIO_PIN_8
 #define PWM23_GPIO_Port GPIOE
-#define PWM24_Pin LL_GPIO_PIN_8
+#define PWM24_Pin GPIO_PIN_9
 #define PWM24_GPIO_Port GPIOE
-#define PWM26_Pin LL_GPIO_PIN_10
+#define PWM25_Pin GPIO_PIN_10
+#define PWM25_GPIO_Port GPIOE
+#define PWM26_Pin GPIO_PIN_11
 #define PWM26_GPIO_Port GPIOE
-#define PWM28_Pin LL_GPIO_PIN_12
+#define PWM27_Pin GPIO_PIN_12
+#define PWM27_GPIO_Port GPIOE
+#define PWM28_Pin GPIO_PIN_13
 #define PWM28_GPIO_Port GPIOE
-#define PWM31_Pin LL_GPIO_PIN_15
-#define PWM31_GPIO_Port GPIOE
-#define PWM32_Pin LL_GPIO_PIN_12
+#define PWM29_Pin GPIO_PIN_14
+#define PWM29_GPIO_Port GPIOE
+#define PWM30_Pin GPIO_PIN_15
+#define PWM30_GPIO_Port GPIOE
+#define PWM31_Pin GPIO_PIN_12
+#define PWM31_GPIO_Port GPIOB
+#define PWM32_Pin GPIO_PIN_13
 #define PWM32_GPIO_Port GPIOB
-#define PWM33_Pin LL_GPIO_PIN_13
+#define PWM33_Pin GPIO_PIN_14
 #define PWM33_GPIO_Port GPIOB
-#define PWM36_Pin LL_GPIO_PIN_8
+#define PWM34_Pin GPIO_PIN_15
+#define PWM34_GPIO_Port GPIOB
+#define PWM35_Pin GPIO_PIN_8
+#define PWM35_GPIO_Port GPIOD
+#define PWM36_Pin GPIO_PIN_9
 #define PWM36_GPIO_Port GPIOD
-#define PWM37_Pin LL_GPIO_PIN_9
+#define PWM37_Pin GPIO_PIN_10
 #define PWM37_GPIO_Port GPIOD
-#define PWM38_Pin LL_GPIO_PIN_10
+#define PWM38_Pin GPIO_PIN_11
 #define PWM38_GPIO_Port GPIOD
-#define PWM39_Pin LL_GPIO_PIN_11
+#define PWM39_Pin GPIO_PIN_14
 #define PWM39_GPIO_Port GPIOD
-#define PWM45_Pin LL_GPIO_PIN_9
+#define PWM40_Pin GPIO_PIN_15
+#define PWM40_GPIO_Port GPIOD
+#define PWM41_Pin GPIO_PIN_6
+#define PWM41_GPIO_Port GPIOC
+#define PWM42_Pin GPIO_PIN_7
+#define PWM42_GPIO_Port GPIOC
+#define PWM43_Pin GPIO_PIN_8
+#define PWM43_GPIO_Port GPIOC
+#define PWM44_Pin GPIO_PIN_9
+#define PWM44_GPIO_Port GPIOA
+#define PWM45_Pin GPIO_PIN_10
 #define PWM45_GPIO_Port GPIOA
-#define PWM46_Pin LL_GPIO_PIN_10
+#define PWM46_Pin GPIO_PIN_15
 #define PWM46_GPIO_Port GPIOA
-#define PWM47_Pin LL_GPIO_PIN_15
-#define PWM47_GPIO_Port GPIOA
-#define PWM48_Pin LL_GPIO_PIN_10
+#define PWM47_Pin GPIO_PIN_10
+#define PWM47_GPIO_Port GPIOC
+#define PWM48_Pin GPIO_PIN_11
 #define PWM48_GPIO_Port GPIOC
-#define PWM49_Pin LL_GPIO_PIN_11
+#define PWM49_Pin GPIO_PIN_12
 #define PWM49_GPIO_Port GPIOC
-#define PWM50_Pin LL_GPIO_PIN_12
-#define PWM50_GPIO_Port GPIOC
-#define PWM51_Pin LL_GPIO_PIN_0
+#define PWM50_Pin GPIO_PIN_0
+#define PWM50_GPIO_Port GPIOD
+#define PWM51_Pin GPIO_PIN_1
 #define PWM51_GPIO_Port GPIOD
-#define PWM52_Pin LL_GPIO_PIN_1
+#define PWM52_Pin GPIO_PIN_2
 #define PWM52_GPIO_Port GPIOD
-#define PWM53_Pin LL_GPIO_PIN_2
+#define PWM53_Pin GPIO_PIN_3
 #define PWM53_GPIO_Port GPIOD
-#define PWM54_Pin LL_GPIO_PIN_3
+#define PWM54_Pin GPIO_PIN_4
 #define PWM54_GPIO_Port GPIOD
-#define PWM55_Pin LL_GPIO_PIN_4
+#define PWM55_Pin GPIO_PIN_5
 #define PWM55_GPIO_Port GPIOD
-#define PWM56_Pin LL_GPIO_PIN_5
+#define PWM56_Pin GPIO_PIN_6
 #define PWM56_GPIO_Port GPIOD
-#define PWM57_Pin LL_GPIO_PIN_6
+#define PWM57_Pin GPIO_PIN_7
 #define PWM57_GPIO_Port GPIOD
-#define PWM58_Pin LL_GPIO_PIN_7
-#define PWM58_GPIO_Port GPIOD
-#define PWM64_Pin LL_GPIO_PIN_1
+#define PWM58_Pin GPIO_PIN_3
+#define PWM58_GPIO_Port GPIOB
+#define PWM59_Pin GPIO_PIN_4
+#define PWM59_GPIO_Port GPIOB
+#define PWM60_Pin GPIO_PIN_5
+#define PWM60_GPIO_Port GPIOB
+#define PWM61_Pin GPIO_PIN_8
+#define PWM61_GPIO_Port GPIOB
+#define PWM62_Pin GPIO_PIN_9
+#define PWM62_GPIO_Port GPIOB
+#define PWM63_Pin GPIO_PIN_5
+#define PWM63_GPIO_Port GPIOA
+#define PWM64_Pin GPIO_PIN_1
 #define PWM64_GPIO_Port GPIOE
 /* USER CODE BEGIN Private defines */
 
+extern midiFifo fifo;
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus
